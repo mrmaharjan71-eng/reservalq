@@ -10,10 +10,10 @@ export const Route = createFileRoute("/")({
         content:
           "Enterprise property management with an AI front desk manager: reservations, room assignment, housekeeping and approvals in one operations console.",
       },
-      { property: "og:title", content: "Aurelia — AI Hotel Management System" },
+      { property: "og:title", content: "Aurelia — AI Hotel Management System for Real Hotels" },
       {
         property: "og:description",
-        content: "Reservations, rooms, housekeeping and an AI booking manager under human approval.",
+        content: "Enterprise property management with an AI front desk manager: reservations, room assignment, housekeeping and approvals in one operations console.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
