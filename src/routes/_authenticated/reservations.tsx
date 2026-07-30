@@ -15,6 +15,9 @@ import {
   roomsQuery,
   type Reservation,
 } from "@/lib/hotel-data";
+import type { Database } from "@/integrations/supabase/types";
+
+type ReservationStatus = Database["public"]["Enums"]["reservation_status"];
 
 export const Route = createFileRoute("/_authenticated/reservations")({
   head: () => ({
@@ -64,7 +67,13 @@ function ReservationsPage() {
   }, [reservations.data, statusFilter, search]);
 
   const updateStatus = useMutation({
-    mutationFn: async ({ reservation, status }: { reservation: Reservation; status: string }) => {
+    mutationFn: async ({
+      reservation,
+      status,
+    }: {
+      reservation: Reservation;
+      status: ReservationStatus;
+    }) => {
       const { error } = await supabase.from("reservations").update({ status }).eq("id", reservation.id);
       if (error) throw new Error(error.message);
 
