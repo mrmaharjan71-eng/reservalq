@@ -136,7 +136,12 @@ export const aiActionsQuery = queryOptions({
 });
 
 /** Writes an audit trail entry; every mutating UI action calls this. */
-export async function logAudit(entity: string, entityId: string | null, action: string, details: object = {}) {
+export async function logAudit(
+  entity: string,
+  entityId: string | null,
+  action: string,
+  details: Record<string, string | number | boolean | null> = {},
+) {
   const { data } = await supabase.auth.getUser();
   await supabase.from("audit_logs").insert({
     actor: data.user?.id ?? null,
