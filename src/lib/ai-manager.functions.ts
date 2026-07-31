@@ -8,6 +8,7 @@ const AskInput = z.object({
     .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(4000) }))
     .max(20)
     .default([]),
+  language: z.string().trim().min(1).max(60).default("English"),
 });
 
 export type ManagerReply = {
@@ -72,6 +73,10 @@ export const askBookingManager = createServerFn({ method: "POST" })
         response_format: { type: "json_object" },
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
+          {
+            role: "system",
+            content: `Write the "reply" field entirely in ${data.language}. Keep guest names, room numbers, references and amounts unchanged. Proposal "summary" and "reasoning" fields must stay in English for the audit trail.`,
+          },
           { role: "system", content: `Live hotel snapshot:\n${JSON.stringify(snapshot)}` },
           ...data.history,
           { role: "user", content: data.question },
