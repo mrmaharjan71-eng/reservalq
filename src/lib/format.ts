@@ -1,7 +1,7 @@
 /** Shared display formatters used across the operations UI. */
 
 export const currency = (value: number | string | null | undefined): string =>
-  new Intl.NumberFormat("en-GB", { style: "currency", currency: "GBP", maximumFractionDigits: 0 }).format(
+  new Intl.NumberFormat("en-NP", { style: "currency", currency: "NPR", maximumFractionDigits: 0 }).format(
     Number(value ?? 0),
   );
 
