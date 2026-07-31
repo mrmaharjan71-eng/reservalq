@@ -9,6 +9,7 @@ import { Badge, Button, EmptyState, Panel, SkeletonRows, inputClass, statusTone 
 import { supabase } from "@/integrations/supabase/client";
 import { titleCase } from "@/lib/format";
 import { askBookingManager } from "@/lib/ai-manager.functions";
+import { LANGUAGES } from "@/lib/languages";
 import { aiActionsQuery, logAudit } from "@/lib/hotel-data";
 import type { Database } from "@/integrations/supabase/types";
 
@@ -48,13 +49,15 @@ function AiManagerPage() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
+  const [language, setLanguage] = useState("English");
 
   useEffect(() => {
     inputRef.current?.focus();
   }, [messages.length]);
 
   const send = useMutation({
-    mutationFn: async (question: string) => ask({ data: { question, history: messages.slice(-8) } }),
+    mutationFn: async (question: string) =>
+      ask({ data: { question, history: messages.slice(-8), language } }),
     onSuccess: (result) => {
       setMessages((current) => [...current, { role: "assistant", content: result.reply }]);
       if (result.proposals.length > 0) {
@@ -152,6 +155,19 @@ function AiManagerPage() {
               submit(input);
             }}
           >
+            <select
+              className={`${inputClass} w-44 shrink-0`}
+              value={language}
+              onChange={(event) => setLanguage(event.target.value)}
+              aria-label="Reply language"
+              title="Translate replies into any country's language"
+            >
+              {LANGUAGES.map((option) => (
+                <option key={option.code} value={option.language}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
             <input
               ref={inputRef}
               className={inputClass}
