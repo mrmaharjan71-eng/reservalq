@@ -53,12 +53,20 @@ function Landing() {
           <Sparkles className="size-5 text-primary" aria-hidden />
           Aurelia <span className="brass-text">HMS</span>
         </span>
-        <Link
-          to="/auth"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:brightness-110"
-        >
-          Staff sign in
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            to="/concierge"
+            className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+          >
+            Guest chat
+          </Link>
+          <Link
+            to="/auth"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:brightness-110"
+          >
+            Staff sign in
+          </Link>
+        </div>
       </header>
 
       <main className="mx-auto max-w-6xl px-6 pb-20">

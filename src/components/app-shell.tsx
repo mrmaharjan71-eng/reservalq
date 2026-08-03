@@ -8,6 +8,7 @@ import {
   LogOut,
   Sparkles,
   SprayCan,
+  MessagesSquare,
 } from "lucide-react";
 import { type ReactNode } from "react";
 
@@ -20,6 +21,7 @@ const NAV = [
   { to: "/rooms", label: "Rooms", icon: BedDouble },
   { to: "/housekeeping", label: "Housekeeping", icon: SprayCan },
   { to: "/ai-manager", label: "AI Manager", icon: Bot },
+  { to: "/guest-chats", label: "Guest Chats", icon: MessagesSquare },
 ] as const;
 
 export function AppShell({
