@@ -12,8 +12,10 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ConciergeRouteImport } from './routes/concierge'
 import { Route as AuthenticatedAiManagerRouteImport } from './routes/_authenticated/ai-manager'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedGuestChatsRouteImport } from './routes/_authenticated/guest-chats'
 import { Route as AuthenticatedHousekeepingRouteImport } from './routes/_authenticated/housekeeping'
 import { Route as AuthenticatedReservationsRouteImport } from './routes/_authenticated/reservations'
 import { Route as AuthenticatedRoomsRouteImport } from './routes/_authenticated/rooms'
@@ -32,6 +34,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConciergeRoute = ConciergeRouteImport.update({
+  id: '/concierge',
+  path: '/concierge',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAiManagerRoute = AuthenticatedAiManagerRouteImport.update({
   id: '/ai-manager',
   path: '/ai-manager',
@@ -40,6 +47,11 @@ const AuthenticatedAiManagerRoute = AuthenticatedAiManagerRouteImport.update({
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGuestChatsRoute = AuthenticatedGuestChatsRouteImport.update({
+  id: '/guest-chats',
+  path: '/guest-chats',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedHousekeepingRoute =
@@ -63,8 +75,10 @@ const AuthenticatedRoomsRoute = AuthenticatedRoomsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/concierge': typeof ConciergeRoute
   '/ai-manager': typeof AuthenticatedAiManagerRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
@@ -72,8 +86,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/concierge': typeof ConciergeRoute
   '/ai-manager': typeof AuthenticatedAiManagerRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
@@ -83,8 +99,10 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/concierge': typeof ConciergeRoute
   '/_authenticated/ai-manager': typeof AuthenticatedAiManagerRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/_authenticated/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/_authenticated/reservations': typeof AuthenticatedReservationsRoute
   '/_authenticated/rooms': typeof AuthenticatedRoomsRoute
@@ -94,8 +112,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/concierge'
     | '/ai-manager'
     | '/dashboard'
+    | '/guest-chats'
     | '/housekeeping'
     | '/reservations'
     | '/rooms'
@@ -103,8 +123,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/concierge'
     | '/ai-manager'
     | '/dashboard'
+    | '/guest-chats'
     | '/housekeeping'
     | '/reservations'
     | '/rooms'
@@ -113,8 +135,10 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/concierge'
     | '/_authenticated/ai-manager'
     | '/_authenticated/dashboard'
+    | '/_authenticated/guest-chats'
     | '/_authenticated/housekeeping'
     | '/_authenticated/reservations'
     | '/_authenticated/rooms'
@@ -124,6 +148,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ConciergeRoute: typeof ConciergeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -149,6 +174,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/concierge': {
+      id: '/concierge'
+      path: '/concierge'
+      fullPath: '/concierge'
+      preLoaderRoute: typeof ConciergeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/ai-manager': {
       id: '/_authenticated/ai-manager'
       path: '/ai-manager'
@@ -161,6 +193,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/guest-chats': {
+      id: '/_authenticated/guest-chats'
+      path: '/guest-chats'
+      fullPath: '/guest-chats'
+      preLoaderRoute: typeof AuthenticatedGuestChatsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/housekeeping': {
@@ -190,6 +229,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAiManagerRoute: typeof AuthenticatedAiManagerRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedGuestChatsRoute: typeof AuthenticatedGuestChatsRoute
   AuthenticatedHousekeepingRoute: typeof AuthenticatedHousekeepingRoute
   AuthenticatedReservationsRoute: typeof AuthenticatedReservationsRoute
   AuthenticatedRoomsRoute: typeof AuthenticatedRoomsRoute
@@ -198,6 +238,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAiManagerRoute: AuthenticatedAiManagerRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedGuestChatsRoute: AuthenticatedGuestChatsRoute,
   AuthenticatedHousekeepingRoute: AuthenticatedHousekeepingRoute,
   AuthenticatedReservationsRoute: AuthenticatedReservationsRoute,
   AuthenticatedRoomsRoute: AuthenticatedRoomsRoute,
@@ -210,6 +251,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ConciergeRoute: ConciergeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

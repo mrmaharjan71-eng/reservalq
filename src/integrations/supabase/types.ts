@@ -97,6 +97,65 @@ export type Database = {
         }
         Relationships: []
       }
+      guest_chat_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: string
+          session_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: string
+          session_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guest_chat_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "guest_chat_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      guest_chat_sessions: {
+        Row: {
+          created_at: string
+          guest_label: string
+          id: string
+          last_message_at: string
+          reference: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          guest_label?: string
+          id?: string
+          last_message_at?: string
+          reference?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          guest_label?: string
+          id?: string
+          last_message_at?: string
+          reference?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       guests: {
         Row: {
           created_at: string
