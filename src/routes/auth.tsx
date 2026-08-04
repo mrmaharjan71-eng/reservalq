@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { Button, Field, inputClass } from "@/components/ui-kit";
@@ -7,26 +7,31 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Staff Sign In — Aurelia AI Hotel Management" },
+      { title: "Administration Sign In — ReservalQ Hotel Management" },
       {
         name: "description",
         content:
-          "Secure sign-in for hotel staff to access reservations, rooms, housekeeping and the AI Booking Manager.",
+          "Secure, invite-only sign-in for the ReservalQ owner, manager and sales manager accounts controlling hotel operations.",
       },
-      { property: "og:title", content: "Staff Sign In — Aurelia AI Hotel Management" },
-      { property: "og:description", content: "Secure sign-in for Aurelia hotel operations staff." },
+      { property: "og:title", content: "Administration Sign In — ReservalQ Hotel Management" },
+      { property: "og:description", content: "Secure administration access to ReservalQ hotel operations." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: AuthPage,
 });
 
+const ACCOUNTS = [
+  { role: "Owner", detail: "Full oversight of every account and every operation." },
+  { role: "Manager", detail: "Front desk, rooms, housekeeping and the AI manager." },
+  { role: "Sales manager", detail: "Reservations, guests, rates and revenue." },
+];
+
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -40,26 +45,9 @@ function AuthPage() {
     event.preventDefault();
     setBusy(true);
     setError(null);
-    setMessage(null);
-
-    if (mode === "signup") {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: window.location.origin,
-          data: { full_name: fullName || email.split("@")[0] },
-        },
-      });
-      setBusy(false);
-      if (signUpError) return setError(signUpError.message);
-      if (!data.session) return setMessage("Check your email to confirm the account, then sign in.");
-      return navigate({ to: "/dashboard", replace: true });
-    }
-
     const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
     setBusy(false);
-    if (signInError) return setError(signInError.message);
+    if (signInError) return setError("Those credentials were not recognised.");
     navigate({ to: "/dashboard", replace: true });
   }
 
@@ -69,46 +57,33 @@ function AuthPage() {
       style={{ background: "var(--gradient-shell)" }}
     >
       <div className="panel w-full max-w-md p-7">
-        <p className="text-xs tracking-[0.2em] text-muted-foreground uppercase">Aurelia Hotel Group</p>
-        <h1 className="mt-2 font-display text-2xl">
-          {mode === "signin" ? "Staff sign in" : "Create staff account"}
-        </h1>
+        <p className="text-xs tracking-[0.2em] text-muted-foreground uppercase">ReservalQ Administration</p>
+        <h1 className="mt-2 font-display text-2xl">Administration sign in</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Front desk, housekeeping and management access to live hotel operations.
+          Access is limited to the three designated hotel administration accounts.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          {mode === "signup" && (
-            <Field label="Full name">
-              <input
-                className={inputClass}
-                value={fullName}
-                onChange={(event) => setFullName(event.target.value)}
-                placeholder="Alex Moreau"
-                autoComplete="name"
-              />
-            </Field>
-          )}
-          <Field label="Work email">
+          <Field label="Account email">
             <input
               className={inputClass}
               type="email"
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              placeholder="you@hotel.com"
+              placeholder="owner@reservalq.com"
               autoComplete="email"
             />
           </Field>
-          <Field label="Password">
+          <Field label="Designated password">
             <input
               className={inputClass}
               type="password"
               required
-              minLength={6}
+              minLength={8}
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              autoComplete="current-password"
             />
           </Field>
 
@@ -117,31 +92,29 @@ function AuthPage() {
               {error}
             </p>
           )}
-          {message && (
-            <p className="rounded-md bg-success/15 px-3 py-2 text-sm text-success">{message}</p>
-          )}
 
           <Button type="submit" disabled={busy} className="w-full">
-            {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
+            {busy ? "Verifying…" : "Sign in"}
           </Button>
         </form>
 
-        <p className="mt-5 text-center text-sm text-muted-foreground">
-          {mode === "signin" ? "First time here?" : "Already have access?"}{" "}
-          <button
-            type="button"
-            className="text-primary underline-offset-4 hover:underline"
-            onClick={() => {
-              setMode(mode === "signin" ? "signup" : "signin");
-              setError(null);
-              setMessage(null);
-            }}
-          >
-            {mode === "signin" ? "Create a staff account" : "Sign in instead"}
-          </button>
-        </p>
-        <p className="mt-3 text-center text-xs text-muted-foreground">
-          The first account created becomes the hotel administrator.
+        <ul className="mt-6 space-y-2 border-t border-border pt-5">
+          {ACCOUNTS.map((account) => (
+            <li key={account.role} className="text-xs text-muted-foreground">
+              <span className="font-medium text-foreground">{account.role}</span> — {account.detail}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 text-center text-xs text-muted-foreground">
+          Self sign-up is disabled. Guests can{" "}
+          <Link to="/book" className="text-primary underline-offset-4 hover:underline">
+            book
+          </Link>{" "}
+          or{" "}
+          <Link to="/concierge" className="text-primary underline-offset-4 hover:underline">
+            chat
+          </Link>{" "}
+          without an account.
         </p>
       </div>
     </div>
