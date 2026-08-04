@@ -164,7 +164,7 @@ function KnowledgePage() {
                       <p className="text-sm font-semibold">{entry.title}</p>
                       <p className="mt-0.5 text-xs text-muted-foreground">{entry.category}</p>
                     </div>
-                    <Badge tone={entry.is_active ? "positive" : "neutral"}>
+                    <Badge tone={entry.is_active ? "success" : "neutral"}>
                       {entry.is_active ? "live" : "hidden"}
                     </Badge>
                   </div>

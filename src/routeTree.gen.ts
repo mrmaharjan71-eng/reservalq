@@ -18,6 +18,7 @@ import { Route as AuthenticatedAiManagerRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedGuestChatsRouteImport } from './routes/_authenticated/guest-chats'
 import { Route as AuthenticatedHousekeepingRouteImport } from './routes/_authenticated/housekeeping'
+import { Route as AuthenticatedKnowledgeRouteImport } from './routes/_authenticated/knowledge'
 import { Route as AuthenticatedReservationsRouteImport } from './routes/_authenticated/reservations'
 import { Route as AuthenticatedRoomsRouteImport } from './routes/_authenticated/rooms'
 import { Route as ApiPublicVoiceSpeakRouteImport } from './routes/api/public/voice-speak'
@@ -68,6 +69,11 @@ const AuthenticatedHousekeepingRoute =
     path: '/housekeeping',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedKnowledgeRoute = AuthenticatedKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedReservationsRoute =
   AuthenticatedReservationsRouteImport.update({
     id: '/reservations',
@@ -100,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
+  '/knowledge': typeof AuthenticatedKnowledgeRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
   '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
@@ -114,6 +121,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
+  '/knowledge': typeof AuthenticatedKnowledgeRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
   '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
@@ -130,6 +138,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/_authenticated/housekeeping': typeof AuthenticatedHousekeepingRoute
+  '/_authenticated/knowledge': typeof AuthenticatedKnowledgeRoute
   '/_authenticated/reservations': typeof AuthenticatedReservationsRoute
   '/_authenticated/rooms': typeof AuthenticatedRoomsRoute
   '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/guest-chats'
     | '/housekeeping'
+    | '/knowledge'
     | '/reservations'
     | '/rooms'
     | '/api/public/voice-speak'
@@ -160,6 +170,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/guest-chats'
     | '/housekeeping'
+    | '/knowledge'
     | '/reservations'
     | '/rooms'
     | '/api/public/voice-speak'
@@ -175,6 +186,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/guest-chats'
     | '/_authenticated/housekeeping'
+    | '/_authenticated/knowledge'
     | '/_authenticated/reservations'
     | '/_authenticated/rooms'
     | '/api/public/voice-speak'
@@ -256,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHousekeepingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/knowledge': {
+      id: '/_authenticated/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof AuthenticatedKnowledgeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/reservations': {
       id: '/_authenticated/reservations'
       path: '/reservations'
@@ -292,6 +311,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedGuestChatsRoute: typeof AuthenticatedGuestChatsRoute
   AuthenticatedHousekeepingRoute: typeof AuthenticatedHousekeepingRoute
+  AuthenticatedKnowledgeRoute: typeof AuthenticatedKnowledgeRoute
   AuthenticatedReservationsRoute: typeof AuthenticatedReservationsRoute
   AuthenticatedRoomsRoute: typeof AuthenticatedRoomsRoute
 }
@@ -301,6 +321,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedGuestChatsRoute: AuthenticatedGuestChatsRoute,
   AuthenticatedHousekeepingRoute: AuthenticatedHousekeepingRoute,
+  AuthenticatedKnowledgeRoute: AuthenticatedKnowledgeRoute,
   AuthenticatedReservationsRoute: AuthenticatedReservationsRoute,
   AuthenticatedRoomsRoute: AuthenticatedRoomsRoute,
 }
