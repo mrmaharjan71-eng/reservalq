@@ -4,13 +4,13 @@ import { Bot, CalendarRange, ShieldCheck, Sparkles, SprayCan } from "lucide-reac
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aurelia — AI Hotel Management System for Real Hotels" },
+      { title: "ReservalQ — AI Hotel Management System for Real Hotels" },
       {
         name: "description",
         content:
           "Enterprise property management with an AI front desk manager: reservations, room assignment, housekeeping and approvals in one operations console.",
       },
-      { property: "og:title", content: "Aurelia — AI Hotel Management System for Real Hotels" },
+      { property: "og:title", content: "ReservalQ — AI Hotel Management System for Real Hotels" },
       {
         property: "og:description",
         content: "Enterprise property management with an AI front desk manager: reservations, room assignment, housekeeping and approvals in one operations console.",
@@ -51,7 +51,7 @@ function Landing() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <span className="flex items-center gap-2 font-display text-lg">
           <Sparkles className="size-5 text-primary" aria-hidden />
-          Aurelia <span className="brass-text">HMS</span>
+          ReservalQ <span className="brass-text">HMS</span>
         </span>
         <div className="flex items-center gap-2">
           <Link
@@ -78,7 +78,7 @@ function Landing() {
             The hotel operations console with an <span className="brass-text">AI front desk manager</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-muted-foreground">
-            Aurelia runs the real work of a property — reservations, room inventory, housekeeping and guest
+            ReservalQ runs the real work of a property — reservations, room inventory, housekeeping and guest
             history — while an AI manager reads live state and recommends the next move. Nothing executes
             without a human approval.
           </p>

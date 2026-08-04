@@ -15,12 +15,12 @@ const CONDITIONS: RoomCondition[] = ["clean", "dirty", "inspected", "out_of_orde
 export const Route = createFileRoute("/_authenticated/rooms")({
   head: () => ({
     meta: [
-      { title: "Rooms & Inventory — Aurelia AI Hotel Management" },
+      { title: "Rooms & Inventory — ReservalQ AI Hotel Management" },
       {
         name: "description",
         content: "Room inventory by floor with live cleaning status, occupancy and rate plan detail.",
       },
-      { property: "og:title", content: "Rooms & Inventory — Aurelia AI Hotel Management" },
+      { property: "og:title", content: "Rooms & Inventory — ReservalQ AI Hotel Management" },
       { property: "og:description", content: "Live room status board across every floor of the hotel." },
     ],
   }),

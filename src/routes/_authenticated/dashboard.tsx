@@ -9,13 +9,13 @@ import { aiActionsQuery, housekeepingQuery, reservationsQuery, roomsQuery } from
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
     meta: [
-      { title: "Operations Dashboard — Aurelia AI Hotel Management" },
+      { title: "Operations Dashboard — ReservalQ AI Hotel Management" },
       {
         name: "description",
         content:
           "Live occupancy, arrivals, departures, revenue and AI recommendations for today's hotel operations.",
       },
-      { property: "og:title", content: "Operations Dashboard — Aurelia AI Hotel Management" },
+      { property: "og:title", content: "Operations Dashboard — ReservalQ AI Hotel Management" },
       {
         property: "og:description",
         content: "Live occupancy, arrivals, departures and AI recommendations in one operations view.",

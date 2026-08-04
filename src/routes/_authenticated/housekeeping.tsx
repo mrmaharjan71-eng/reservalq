@@ -15,12 +15,12 @@ const COLUMNS: TaskStatus[] = ["pending", "in_progress", "completed", "blocked"]
 export const Route = createFileRoute("/_authenticated/housekeeping")({
   head: () => ({
     meta: [
-      { title: "Housekeeping Board — Aurelia AI Hotel Management" },
+      { title: "Housekeeping Board — ReservalQ AI Hotel Management" },
       {
         name: "description",
         content: "Kanban board of cleaning, turndown and maintenance tasks prioritised against arrivals.",
       },
-      { property: "og:title", content: "Housekeeping Board — Aurelia AI Hotel Management" },
+      { property: "og:title", content: "Housekeeping Board — ReservalQ AI Hotel Management" },
       { property: "og:description", content: "Prioritised housekeeping and maintenance task board." },
     ],
   }),

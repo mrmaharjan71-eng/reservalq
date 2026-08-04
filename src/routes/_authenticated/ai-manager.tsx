@@ -19,13 +19,13 @@ type ChatMessage = { role: "user" | "assistant"; content: string };
 export const Route = createFileRoute("/_authenticated/ai-manager")({
   head: () => ({
     meta: [
-      { title: "AI Booking Manager — Aurelia AI Hotel Management" },
+      { title: "AI Booking Manager — ReservalQ AI Hotel Management" },
       {
         name: "description",
         content:
           "An AI front desk manager that reads live occupancy, recommends actions with reasoning, and waits for human approval.",
       },
-      { property: "og:title", content: "AI Booking Manager — Aurelia AI Hotel Management" },
+      { property: "og:title", content: "AI Booking Manager — ReservalQ AI Hotel Management" },
       {
         property: "og:description",
         content: "AI recommendations for rooms, upsells and risk — always under human approval.",
