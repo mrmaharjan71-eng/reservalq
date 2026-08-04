@@ -127,7 +127,7 @@ function ConciergePage() {
       <header className="mx-auto flex max-w-3xl items-center justify-between px-6 py-6">
         <Link to="/" className="flex items-center gap-2 font-display text-lg">
           <Sparkles className="size-5 text-primary" aria-hidden />
-          Reserval<span className="brass-text">Q</span>
+          <span>Reserval<span className="brass-text">Q</span></span>
         </Link>
         <Link to="/book" className="text-sm text-primary underline-offset-4 hover:underline">
           Book a room

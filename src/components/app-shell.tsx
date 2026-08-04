@@ -52,7 +52,7 @@ export function AppShell({
         <div className="flex items-center gap-2 px-5 py-5">
           <Sparkles className="size-5 text-primary" aria-hidden />
           <span className="font-display text-lg leading-none">
-            Reserval<span className="brass-text">Q</span>
+            <span>Reserval<span className="brass-text">Q</span></span>
           </span>
         </div>
         <nav aria-label="Main" className="flex gap-1 overflow-x-auto px-3 pb-3 lg:flex-col lg:overflow-visible">
