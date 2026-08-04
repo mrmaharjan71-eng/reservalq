@@ -11,6 +11,7 @@ const StartInput = z.object({
 const SendInput = z.object({
   sessionId: z.string().uuid(),
   message: z.string().trim().min(1).max(800),
+  language: z.string().trim().min(1).max(60).default("English"),
 });
 
 export type GuestChatTurn = { role: "guest" | "assistant"; content: string };
@@ -73,6 +74,10 @@ export const sendGuestChatMessage = createServerFn({ method: "POST" })
         reasoning_effort: "none",
         messages: [
           { role: "system", content: GUEST_SYSTEM_PROMPT },
+          {
+            role: "system",
+            content: `Reply entirely in ${data.language}, even if the guest writes in another language. Keep room names, references and amounts unchanged.`,
+          },
           { role: "system", content: `Hotel catalogue (rates in NPR):\n${JSON.stringify(catalogue)}` },
           ...priorTurns,
           { role: "user", content: data.message },
