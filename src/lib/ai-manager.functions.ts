@@ -16,7 +16,7 @@ export type ManagerReply = {
   proposals: { action_type: string; summary: string; reasoning: string; confidence: number }[];
 };
 
-const SYSTEM_PROMPT = `You are the AI Front Desk Manager for the Aurelia Hotel.
+const SYSTEM_PROMPT = `You are the AI Front Desk Manager for the ReservalQ Hotel.
 You work alongside human staff and operate under human supervision.
 
 Rules:

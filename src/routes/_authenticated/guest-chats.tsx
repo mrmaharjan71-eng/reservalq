@@ -9,13 +9,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/_authenticated/guest-chats")({
   head: () => ({
     meta: [
-      { title: "Guest Chats — Aurelia AI Hotel Management" },
+      { title: "Guest Chats — ReservalQ AI Hotel Management" },
       {
         name: "description",
         content:
-          "Admin-only transcripts of every anonymous guest conversation with the Aurelia concierge assistant.",
+          "Admin-only transcripts of every anonymous guest conversation with the ReservalQ concierge assistant.",
       },
-      { property: "og:title", content: "Guest Chats — Aurelia AI Hotel Management" },
+      { property: "og:title", content: "Guest Chats — ReservalQ AI Hotel Management" },
       {
         property: "og:description",
         content: "Read stored guest concierge conversations. Visible to hotel admins only.",

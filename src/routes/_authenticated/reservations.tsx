@@ -22,13 +22,13 @@ type ReservationStatus = Database["public"]["Enums"]["reservation_status"];
 export const Route = createFileRoute("/_authenticated/reservations")({
   head: () => ({
     meta: [
-      { title: "Reservations — Aurelia AI Hotel Management" },
+      { title: "Reservations — ReservalQ AI Hotel Management" },
       {
         name: "description",
         content:
           "Create bookings, assign rooms, check guests in and out, and track balances across every channel.",
       },
-      { property: "og:title", content: "Reservations — Aurelia AI Hotel Management" },
+      { property: "og:title", content: "Reservations — ReservalQ AI Hotel Management" },
       { property: "og:description", content: "Full reservation lifecycle management for the front desk." },
     ],
   }),

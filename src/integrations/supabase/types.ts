@@ -192,6 +192,39 @@ export type Database = {
         }
         Relationships: []
       }
+      hotel_knowledge: {
+        Row: {
+          category: string
+          content: string
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          content: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          content?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       housekeeping_tasks: {
         Row: {
           assigned_to: string | null
@@ -447,6 +480,8 @@ export type Database = {
         | "housekeeping"
         | "maintenance"
         | "finance"
+        | "owner"
+        | "sales_manager"
       reservation_status:
         | "pending"
         | "confirmed"
@@ -591,6 +626,8 @@ export const Constants = {
         "housekeeping",
         "maintenance",
         "finance",
+        "owner",
+        "sales_manager",
       ],
       reservation_status: [
         "pending",

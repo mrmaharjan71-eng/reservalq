@@ -12,13 +12,17 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BookRouteImport } from './routes/book'
 import { Route as ConciergeRouteImport } from './routes/concierge'
 import { Route as AuthenticatedAiManagerRouteImport } from './routes/_authenticated/ai-manager'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedGuestChatsRouteImport } from './routes/_authenticated/guest-chats'
 import { Route as AuthenticatedHousekeepingRouteImport } from './routes/_authenticated/housekeeping'
+import { Route as AuthenticatedKnowledgeRouteImport } from './routes/_authenticated/knowledge'
 import { Route as AuthenticatedReservationsRouteImport } from './routes/_authenticated/reservations'
 import { Route as AuthenticatedRoomsRouteImport } from './routes/_authenticated/rooms'
+import { Route as ApiPublicVoiceSpeakRouteImport } from './routes/api/public/voice-speak'
+import { Route as ApiPublicVoiceTranscribeRouteImport } from './routes/api/public/voice-transcribe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -32,6 +36,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookRoute = BookRouteImport.update({
+  id: '/book',
+  path: '/book',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConciergeRoute = ConciergeRouteImport.update({
@@ -60,6 +69,11 @@ const AuthenticatedHousekeepingRoute =
     path: '/housekeeping',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedKnowledgeRoute = AuthenticatedKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedReservationsRoute =
   AuthenticatedReservationsRouteImport.update({
     id: '/reservations',
@@ -71,84 +85,122 @@ const AuthenticatedRoomsRoute = AuthenticatedRoomsRouteImport.update({
   path: '/rooms',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicVoiceSpeakRoute = ApiPublicVoiceSpeakRouteImport.update({
+  id: '/api/public/voice-speak',
+  path: '/api/public/voice-speak',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicVoiceTranscribeRoute =
+  ApiPublicVoiceTranscribeRouteImport.update({
+    id: '/api/public/voice-transcribe',
+    path: '/api/public/voice-transcribe',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/book': typeof BookRoute
   '/concierge': typeof ConciergeRoute
   '/ai-manager': typeof AuthenticatedAiManagerRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
+  '/knowledge': typeof AuthenticatedKnowledgeRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
+  '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
+  '/api/public/voice-transcribe': typeof ApiPublicVoiceTranscribeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/book': typeof BookRoute
   '/concierge': typeof ConciergeRoute
   '/ai-manager': typeof AuthenticatedAiManagerRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
+  '/knowledge': typeof AuthenticatedKnowledgeRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
+  '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
+  '/api/public/voice-transcribe': typeof ApiPublicVoiceTranscribeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/book': typeof BookRoute
   '/concierge': typeof ConciergeRoute
   '/_authenticated/ai-manager': typeof AuthenticatedAiManagerRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/guest-chats': typeof AuthenticatedGuestChatsRoute
   '/_authenticated/housekeeping': typeof AuthenticatedHousekeepingRoute
+  '/_authenticated/knowledge': typeof AuthenticatedKnowledgeRoute
   '/_authenticated/reservations': typeof AuthenticatedReservationsRoute
   '/_authenticated/rooms': typeof AuthenticatedRoomsRoute
+  '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
+  '/api/public/voice-transcribe': typeof ApiPublicVoiceTranscribeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/auth'
+    | '/book'
     | '/concierge'
     | '/ai-manager'
     | '/dashboard'
     | '/guest-chats'
     | '/housekeeping'
+    | '/knowledge'
     | '/reservations'
     | '/rooms'
+    | '/api/public/voice-speak'
+    | '/api/public/voice-transcribe'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
+    | '/book'
     | '/concierge'
     | '/ai-manager'
     | '/dashboard'
     | '/guest-chats'
     | '/housekeeping'
+    | '/knowledge'
     | '/reservations'
     | '/rooms'
+    | '/api/public/voice-speak'
+    | '/api/public/voice-transcribe'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/book'
     | '/concierge'
     | '/_authenticated/ai-manager'
     | '/_authenticated/dashboard'
     | '/_authenticated/guest-chats'
     | '/_authenticated/housekeeping'
+    | '/_authenticated/knowledge'
     | '/_authenticated/reservations'
     | '/_authenticated/rooms'
+    | '/api/public/voice-speak'
+    | '/api/public/voice-transcribe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BookRoute: typeof BookRoute
   ConciergeRoute: typeof ConciergeRoute
+  ApiPublicVoiceSpeakRoute: typeof ApiPublicVoiceSpeakRoute
+  ApiPublicVoiceTranscribeRoute: typeof ApiPublicVoiceTranscribeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book': {
+      id: '/book'
+      path: '/book'
+      fullPath: '/book'
+      preLoaderRoute: typeof BookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/concierge': {
@@ -209,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedHousekeepingRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/knowledge': {
+      id: '/_authenticated/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof AuthenticatedKnowledgeRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/reservations': {
       id: '/_authenticated/reservations'
       path: '/reservations'
@@ -223,6 +289,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRoomsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/voice-speak': {
+      id: '/api/public/voice-speak'
+      path: '/api/public/voice-speak'
+      fullPath: '/api/public/voice-speak'
+      preLoaderRoute: typeof ApiPublicVoiceSpeakRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/voice-transcribe': {
+      id: '/api/public/voice-transcribe'
+      path: '/api/public/voice-transcribe'
+      fullPath: '/api/public/voice-transcribe'
+      preLoaderRoute: typeof ApiPublicVoiceTranscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -231,6 +311,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedGuestChatsRoute: typeof AuthenticatedGuestChatsRoute
   AuthenticatedHousekeepingRoute: typeof AuthenticatedHousekeepingRoute
+  AuthenticatedKnowledgeRoute: typeof AuthenticatedKnowledgeRoute
   AuthenticatedReservationsRoute: typeof AuthenticatedReservationsRoute
   AuthenticatedRoomsRoute: typeof AuthenticatedRoomsRoute
 }
@@ -240,6 +321,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedGuestChatsRoute: AuthenticatedGuestChatsRoute,
   AuthenticatedHousekeepingRoute: AuthenticatedHousekeepingRoute,
+  AuthenticatedKnowledgeRoute: AuthenticatedKnowledgeRoute,
   AuthenticatedReservationsRoute: AuthenticatedReservationsRoute,
   AuthenticatedRoomsRoute: AuthenticatedRoomsRoute,
 }
@@ -251,18 +333,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  BookRoute: BookRoute,
   ConciergeRoute: ConciergeRoute,
+  ApiPublicVoiceSpeakRoute: ApiPublicVoiceSpeakRoute,
+  ApiPublicVoiceTranscribeRoute: ApiPublicVoiceTranscribeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

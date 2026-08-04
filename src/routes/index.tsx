@@ -4,13 +4,13 @@ import { Bot, CalendarRange, ShieldCheck, Sparkles, SprayCan } from "lucide-reac
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aurelia — AI Hotel Management System for Real Hotels" },
+      { title: "ReservalQ — AI Hotel Management System for Real Hotels" },
       {
         name: "description",
         content:
           "Enterprise property management with an AI front desk manager: reservations, room assignment, housekeeping and approvals in one operations console.",
       },
-      { property: "og:title", content: "Aurelia — AI Hotel Management System for Real Hotels" },
+      { property: "og:title", content: "ReservalQ — AI Hotel Management System for Real Hotels" },
       {
         property: "og:description",
         content: "Enterprise property management with an AI front desk manager: reservations, room assignment, housekeeping and approvals in one operations console.",
@@ -51,9 +51,15 @@ function Landing() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <span className="flex items-center gap-2 font-display text-lg">
           <Sparkles className="size-5 text-primary" aria-hidden />
-          Aurelia <span className="brass-text">HMS</span>
+          <span>Reserval<span className="brass-text">Q</span></span>
         </span>
         <div className="flex items-center gap-2">
+          <Link
+            to="/book"
+            className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
+          >
+            Book a room
+          </Link>
           <Link
             to="/concierge"
             className="rounded-md border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-secondary"
@@ -64,7 +70,7 @@ function Landing() {
             to="/auth"
             className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:brightness-110"
           >
-            Staff sign in
+            Administration
           </Link>
         </div>
       </header>
@@ -78,22 +84,22 @@ function Landing() {
             The hotel operations console with an <span className="brass-text">AI front desk manager</span>
           </h1>
           <p className="mt-5 max-w-2xl text-lg text-muted-foreground">
-            Aurelia runs the real work of a property — reservations, room inventory, housekeeping and guest
+            ReservalQ runs the real work of a property — reservations, room inventory, housekeeping and guest
             history — while an AI manager reads live state and recommends the next move. Nothing executes
             without a human approval.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              to="/auth"
+              to="/book"
               className="rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:brightness-110"
             >
-              Enter the console
+              Book a room
             </Link>
             <Link
-              to="/dashboard"
+              to="/concierge"
               className="rounded-md border border-border px-5 py-2.5 text-sm font-medium transition-colors hover:bg-secondary"
             >
-              View today's operations
+              Talk to the concierge
             </Link>
           </div>
         </section>
