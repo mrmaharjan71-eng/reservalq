@@ -19,6 +19,8 @@ import { Route as AuthenticatedGuestChatsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedHousekeepingRouteImport } from './routes/_authenticated/housekeeping'
 import { Route as AuthenticatedReservationsRouteImport } from './routes/_authenticated/reservations'
 import { Route as AuthenticatedRoomsRouteImport } from './routes/_authenticated/rooms'
+import { Route as ApiPublicVoiceSpeakRouteImport } from './routes/api/public/voice-speak'
+import { Route as ApiPublicVoiceTranscribeRouteImport } from './routes/api/public/voice-transcribe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -71,6 +73,17 @@ const AuthenticatedRoomsRoute = AuthenticatedRoomsRouteImport.update({
   path: '/rooms',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicVoiceSpeakRoute = ApiPublicVoiceSpeakRouteImport.update({
+  id: '/api/public/voice-speak',
+  path: '/api/public/voice-speak',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicVoiceTranscribeRoute =
+  ApiPublicVoiceTranscribeRouteImport.update({
+    id: '/api/public/voice-transcribe',
+    path: '/api/public/voice-transcribe',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +95,8 @@ export interface FileRoutesByFullPath {
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
+  '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
+  '/api/public/voice-transcribe': typeof ApiPublicVoiceTranscribeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -93,6 +108,8 @@ export interface FileRoutesByTo {
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
+  '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
+  '/api/public/voice-transcribe': typeof ApiPublicVoiceTranscribeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,6 +123,8 @@ export interface FileRoutesById {
   '/_authenticated/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/_authenticated/reservations': typeof AuthenticatedReservationsRoute
   '/_authenticated/rooms': typeof AuthenticatedRoomsRoute
+  '/api/public/voice-speak': typeof ApiPublicVoiceSpeakRoute
+  '/api/public/voice-transcribe': typeof ApiPublicVoiceTranscribeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,6 +138,8 @@ export interface FileRouteTypes {
     | '/housekeeping'
     | '/reservations'
     | '/rooms'
+    | '/api/public/voice-speak'
+    | '/api/public/voice-transcribe'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -130,6 +151,8 @@ export interface FileRouteTypes {
     | '/housekeeping'
     | '/reservations'
     | '/rooms'
+    | '/api/public/voice-speak'
+    | '/api/public/voice-transcribe'
   id:
     | '__root__'
     | '/'
@@ -142,6 +165,8 @@ export interface FileRouteTypes {
     | '/_authenticated/housekeeping'
     | '/_authenticated/reservations'
     | '/_authenticated/rooms'
+    | '/api/public/voice-speak'
+    | '/api/public/voice-transcribe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -149,6 +174,8 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ConciergeRoute: typeof ConciergeRoute
+  ApiPublicVoiceSpeakRoute: typeof ApiPublicVoiceSpeakRoute
+  ApiPublicVoiceTranscribeRoute: typeof ApiPublicVoiceTranscribeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -223,6 +250,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRoomsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/voice-speak': {
+      id: '/api/public/voice-speak'
+      path: '/api/public/voice-speak'
+      fullPath: '/api/public/voice-speak'
+      preLoaderRoute: typeof ApiPublicVoiceSpeakRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/voice-transcribe': {
+      id: '/api/public/voice-transcribe'
+      path: '/api/public/voice-transcribe'
+      fullPath: '/api/public/voice-transcribe'
+      preLoaderRoute: typeof ApiPublicVoiceTranscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -252,6 +293,8 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ConciergeRoute: ConciergeRoute,
+  ApiPublicVoiceSpeakRoute: ApiPublicVoiceSpeakRoute,
+  ApiPublicVoiceTranscribeRoute: ApiPublicVoiceTranscribeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
