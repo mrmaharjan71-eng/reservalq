@@ -19,7 +19,6 @@ import { Route as AuthenticatedGuestChatsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedHousekeepingRouteImport } from './routes/_authenticated/housekeeping'
 import { Route as AuthenticatedReservationsRouteImport } from './routes/_authenticated/reservations'
 import { Route as AuthenticatedRoomsRouteImport } from './routes/_authenticated/rooms'
-import { Route as ApiPublicSetupAccountsRouteImport } from './routes/api/public/setup-accounts'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -72,11 +71,6 @@ const AuthenticatedRoomsRoute = AuthenticatedRoomsRouteImport.update({
   path: '/rooms',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ApiPublicSetupAccountsRoute = ApiPublicSetupAccountsRouteImport.update({
-  id: '/api/public/setup-accounts',
-  path: '/api/public/setup-accounts',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,7 +82,6 @@ export interface FileRoutesByFullPath {
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
-  '/api/public/setup-accounts': typeof ApiPublicSetupAccountsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -100,7 +93,6 @@ export interface FileRoutesByTo {
   '/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/reservations': typeof AuthenticatedReservationsRoute
   '/rooms': typeof AuthenticatedRoomsRoute
-  '/api/public/setup-accounts': typeof ApiPublicSetupAccountsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -114,7 +106,6 @@ export interface FileRoutesById {
   '/_authenticated/housekeeping': typeof AuthenticatedHousekeepingRoute
   '/_authenticated/reservations': typeof AuthenticatedReservationsRoute
   '/_authenticated/rooms': typeof AuthenticatedRoomsRoute
-  '/api/public/setup-accounts': typeof ApiPublicSetupAccountsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -128,7 +119,6 @@ export interface FileRouteTypes {
     | '/housekeeping'
     | '/reservations'
     | '/rooms'
-    | '/api/public/setup-accounts'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -140,7 +130,6 @@ export interface FileRouteTypes {
     | '/housekeeping'
     | '/reservations'
     | '/rooms'
-    | '/api/public/setup-accounts'
   id:
     | '__root__'
     | '/'
@@ -153,7 +142,6 @@ export interface FileRouteTypes {
     | '/_authenticated/housekeeping'
     | '/_authenticated/reservations'
     | '/_authenticated/rooms'
-    | '/api/public/setup-accounts'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -161,7 +149,6 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ConciergeRoute: typeof ConciergeRoute
-  ApiPublicSetupAccountsRoute: typeof ApiPublicSetupAccountsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -236,13 +223,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRoomsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/api/public/setup-accounts': {
-      id: '/api/public/setup-accounts'
-      path: '/api/public/setup-accounts'
-      fullPath: '/api/public/setup-accounts'
-      preLoaderRoute: typeof ApiPublicSetupAccountsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -272,7 +252,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ConciergeRoute: ConciergeRoute,
-  ApiPublicSetupAccountsRoute: ApiPublicSetupAccountsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
