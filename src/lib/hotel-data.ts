@@ -135,6 +135,17 @@ export const aiActionsQuery = queryOptions({
     ),
 });
 
+/** Roles of the signed-in staff member; used to gate edit affordances (RLS still enforces). */
+export const myRolesQuery = queryOptions({
+  queryKey: ["my_roles"],
+  queryFn: async (): Promise<string[]> => {
+    const { data: auth } = await supabase.auth.getUser();
+    if (!auth.user) return [];
+    const { data } = await supabase.from("user_roles").select("role").eq("user_id", auth.user.id);
+    return (data ?? []).map((row) => row.role as string);
+  },
+});
+
 /** Writes an audit trail entry; every mutating UI action calls this. */
 export async function logAudit(
   entity: string,
