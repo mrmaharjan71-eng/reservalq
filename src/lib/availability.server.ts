@@ -22,7 +22,7 @@ export async function computeAvailability(checkIn: string, checkOut: string): Pr
     supabaseAdmin
       .from("reservations")
       .select("room_type_id,check_in,check_out,status")
-      .in("status", BLOCKING_STATUSES as unknown as string[])
+      .in("status", [...BLOCKING_STATUSES])
       .lt("check_in", checkOut)
       .gt("check_out", checkIn),
   ]);
