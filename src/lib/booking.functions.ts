@@ -1,16 +1,24 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
+import { computeAvailability, type TypeAvailability } from "./availability.server";
+import { optionalEmailSchema, phoneSchema } from "./validation";
+
 const BookingInput = z.object({
   fullName: z.string().trim().min(2).max(100),
-  email: z.string().trim().email().max(255).or(z.literal("")),
-  phone: z.string().trim().max(40),
+  email: optionalEmailSchema,
+  phone: phoneSchema,
   roomTypeId: z.string().uuid(),
   checkIn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   checkOut: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   adults: z.number().int().min(1).max(8),
   children: z.number().int().min(0).max(8),
   requests: z.string().trim().max(600).default(""),
+});
+
+const AvailabilityInput = z.object({
+  checkIn: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  checkOut: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 
 export type PublicRoomType = {
@@ -35,6 +43,14 @@ export const listPublicRoomTypes = createServerFn({ method: "GET" }).handler(
   },
 );
 
+/** Live availability per room category for the requested dates. */
+export const getRoomAvailability = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => AvailabilityInput.parse(input))
+  .handler(async ({ data }): Promise<TypeAvailability[]> => {
+    if (new Date(data.checkOut) <= new Date(data.checkIn)) return [];
+    return computeAvailability(data.checkIn, data.checkOut);
+  });
+
 /** Creates a pending booking request from an anonymous guest — staff confirm it. */
 export const submitGuestBooking = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => BookingInput.parse(input))
@@ -54,6 +70,17 @@ export const submitGuestBooking = createServerFn({ method: "POST" })
     if (!roomType) throw new Error("That room type is no longer available.");
     if (data.adults + data.children > roomType.max_occupancy) {
       throw new Error(`This room sleeps up to ${roomType.max_occupancy} guests.`);
+    }
+
+    const availability = await computeAvailability(data.checkIn, data.checkOut);
+    const forType = availability.find((row) => row.room_type_id === data.roomTypeId);
+    if (!forType || forType.total_rooms === 0) {
+      throw new Error("This room category has no bookable rooms right now.");
+    }
+    if (forType.available_rooms < 1) {
+      throw new Error(
+        `${forType.name} is fully booked for those dates. Please choose other dates or another room.`,
+      );
     }
 
     let guestId: string | null = null;

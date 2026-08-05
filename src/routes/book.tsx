@@ -6,8 +6,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 import { Button, Field, Panel, inputClass } from "@/components/ui-kit";
-import { listPublicRoomTypes, submitGuestBooking } from "@/lib/booking.functions";
+import { getRoomAvailability, listPublicRoomTypes, submitGuestBooking } from "@/lib/booking.functions";
 import { currency } from "@/lib/format";
+import { emailError, phoneError } from "@/lib/validation";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/book")({
@@ -40,6 +41,7 @@ function today(offset = 0) {
 function BookPage() {
   const loadRoomTypes = useServerFn(listPublicRoomTypes);
   const book = useServerFn(submitGuestBooking);
+  const loadAvailability = useServerFn(getRoomAvailability);
 
   const roomTypes = useQuery({ queryKey: ["public_room_types"], queryFn: () => loadRoomTypes() });
 
@@ -65,6 +67,18 @@ function BookPage() {
   );
   const estimate = selected ? selected.base_rate * nights : 0;
 
+  const availability = useQuery({
+    queryKey: ["availability", checkIn, checkOut],
+    queryFn: () => loadAvailability({ data: { checkIn, checkOut } }),
+    enabled: nights > 0,
+  });
+  const freeRooms = (typeId: string) =>
+    availability.data?.find((row) => row.room_type_id === typeId)?.available_rooms ?? null;
+  const selectedFree = roomTypeId ? freeRooms(roomTypeId) : null;
+
+  const phoneMessage = phone.trim() ? phoneError(phone.trim()) : null;
+  const emailMessage = emailError(email, true);
+
   const submit = useMutation({
     mutationFn: async () =>
       book({
@@ -81,7 +95,10 @@ function BookPage() {
         },
       }),
     onSuccess: (result) => setConfirmation(result),
-    onError: (error: Error) => toast.error(error.message),
+    onError: (error: Error) => {
+      toast.error(error.message);
+      availability.refetch();
+    },
   });
 
   return (
@@ -128,25 +145,45 @@ function BookPage() {
             onSubmit={(event) => {
               event.preventDefault();
               if (!roomTypeId) return toast.error("Choose a room first.");
+              if (nights < 1) return toast.error("Check-out must be at least one night after check-in.");
+              const phoneIssue = phoneError(phone.trim());
+              if (phoneIssue) return toast.error(phoneIssue);
+              const emailIssue = emailError(email, true);
+              if (emailIssue) return toast.error(emailIssue);
+              if (selectedFree === 0) {
+                return toast.error("That room is fully booked for those dates. Please pick another.");
+              }
               submit.mutate();
             }}
           >
             <div className="space-y-4">
-              <Panel title="Choose a room">
+              <Panel
+                title="Choose a room"
+                description={
+                  nights > 0
+                    ? "Availability is live — rooms already booked for these dates cannot be selected."
+                    : "Pick your dates to see live availability."
+                }
+              >
                 {roomTypes.isLoading ? (
                   <p className="text-sm text-muted-foreground">Loading rooms…</p>
                 ) : (
                   <div className="grid gap-3 sm:grid-cols-2">
-                    {(roomTypes.data ?? []).map((type) => (
+                    {(roomTypes.data ?? []).map((type) => {
+                      const free = freeRooms(type.id);
+                      const soldOut = free === 0;
+                      return (
                       <button
                         key={type.id}
                         type="button"
+                        disabled={soldOut}
                         onClick={() => setRoomTypeId(type.id)}
                         className={cn(
                           "rounded-lg border p-4 text-left transition-colors",
                           roomTypeId === type.id
                             ? "border-primary bg-primary/10"
                             : "border-border hover:bg-secondary/60",
+                          soldOut && "cursor-not-allowed opacity-50 hover:bg-transparent",
                         )}
                       >
                         <span className="flex items-center gap-2 text-sm font-semibold">
@@ -154,6 +191,19 @@ function BookPage() {
                           {type.name}
                         </span>
                         <span className="mt-1 block text-xs text-muted-foreground">{type.description}</span>
+                        <span className="mt-2 block text-xs">
+                          {availability.isFetching && free === null ? (
+                            <span className="text-muted-foreground">Checking availability…</span>
+                          ) : free === null ? (
+                            <span className="text-muted-foreground">Select dates for availability</span>
+                          ) : soldOut ? (
+                            <span className="text-destructive">Fully booked for these dates</span>
+                          ) : (
+                            <span className="text-success">
+                              {free} room{free === 1 ? "" : "s"} available
+                            </span>
+                          )}
+                        </span>
                         <span className="mt-3 flex items-center justify-between text-xs">
                           <span className="flex items-center gap-1 text-muted-foreground">
                             <Users className="size-3.5" aria-hidden /> up to {type.max_occupancy}
@@ -161,7 +211,8 @@ function BookPage() {
                           <span className="font-medium text-primary">{currency(type.base_rate)} / night</span>
                         </span>
                       </button>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
               </Panel>
@@ -181,21 +232,28 @@ function BookPage() {
                   <Field label="Phone">
                     <input
                       className={inputClass}
-                      maxLength={40}
+                      type="tel"
+                      required
+                      inputMode="tel"
+                      maxLength={24}
+                      aria-invalid={Boolean(phoneMessage)}
                       value={phone}
                       onChange={(event) => setPhone(event.target.value)}
                       placeholder="+977 …"
                     />
+                    {phoneMessage && <p className="mt-1 text-xs text-destructive">{phoneMessage}</p>}
                   </Field>
                   <Field label="Email (optional)">
                     <input
                       className={inputClass}
                       type="email"
                       maxLength={255}
+                      aria-invalid={Boolean(emailMessage)}
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
                       placeholder="you@example.com"
                     />
+                    {emailMessage && <p className="mt-1 text-xs text-destructive">{emailMessage}</p>}
                   </Field>
                   <Field label="Special requests">
                     <input
@@ -264,14 +322,24 @@ function BookPage() {
                     <span>Room</span>
                     <span className="text-foreground">{selected?.name ?? "—"}</span>
                   </p>
+                  {selectedFree !== null && (
+                    <p className="mt-1 flex justify-between text-muted-foreground">
+                      <span>Rooms left</span>
+                      <span className="text-foreground">{selectedFree}</span>
+                    </p>
+                  )}
                   <p className="mt-3 flex items-baseline justify-between border-t border-border pt-3">
                     <span className="text-muted-foreground">Estimated total</span>
                     <span className="font-display text-xl brass-text">{currency(estimate)}</span>
                   </p>
                 </div>
 
-                <Button type="submit" className="w-full" disabled={submit.isPending}>
-                  {submit.isPending ? "Sending…" : "Request booking"}
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={submit.isPending || selectedFree === 0}
+                >
+                  {submit.isPending ? "Sending…" : selectedFree === 0 ? "Fully booked" : "Request booking"}
                 </Button>
                 <p className="text-center text-xs text-muted-foreground">
                   No payment now — the front desk confirms availability first.
